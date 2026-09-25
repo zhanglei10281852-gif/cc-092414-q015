@@ -60,3 +60,29 @@ class RiskDecision(BaseModel):
     reason: str = Field(..., min_length=1, max_length=300)
     operator: str = Field(..., min_length=1, max_length=80)
 
+
+class RehearsalCreate(BaseModel):
+    title: str = Field(..., min_length=1, max_length=120)
+    limits: dict[str, float] = Field(..., min_length=1, max_length=200)
+    sampling_per_ton: float = Field(..., gt=0, le=1000)
+    expires_in_hours: float = Field(default=72, gt=0, le=720)
+    expires_at: str | None = Field(default=None, min_length=10, max_length=40)
+
+    @field_validator("limits")
+    @classmethod
+    def normalize_limits(cls, value: dict[str, float]) -> dict[str, float]:
+        cleaned: dict[str, float] = {}
+        for analyte, limit in value.items():
+            name = analyte.strip()
+            if not name:
+                raise ValueError("限值项目名称不能为空")
+            if limit < 0:
+                raise ValueError("限值不能为负数")
+            cleaned[name] = limit
+        return cleaned
+
+
+class ApprovalCreate(BaseModel):
+    decision: str = Field(..., pattern="^(approve|reject)$")
+    opinion: str = Field(..., min_length=1, max_length=500)
+

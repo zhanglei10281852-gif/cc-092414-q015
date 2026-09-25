@@ -233,6 +233,10 @@ PERMISSIONS = [
     ("announcements.write", "维护公告", "announcements", "write"),
     ("audit.read", "查看审计", "audit", "read"),
     ("jobs.run", "执行后台任务", "jobs", "run"),
+    ("food.rules.read", "查看限值规则与预演", "food.rules", "read"),
+    ("food.rules.rehearse", "创建限值规则预演", "food.rules", "rehearse"),
+    ("food.rules.approve", "审批限值规则预演", "food.rules", "approve"),
+    ("food.rules.publish", "发布限值规则版本", "food.rules", "publish"),
 ]
 
 
